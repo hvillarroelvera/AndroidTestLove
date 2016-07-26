@@ -1,0 +1,107 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hector.testloveapp.MenuPrincipal"
+    style="@style/TestLoveApp_relativeLayouts">
+
+    <include android:id="@+id/appBar"
+        layout="@layout/toolbar" />
+
+
+        <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/Contenedor1Puntuacion"
+        android:layout_marginBottom="40dp"
+        style="@style/TestLoveApp_linearLayouts"
+        android:layout_below="@+id/appBar">
+
+            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="210dp"
+            android:layout_below="@+id/ButtonAgregarContacto"
+            android:layout_toStartOf="@+id/ButtonPreguntar"
+            android:layout_marginTop="25dp"
+            android:layout_alignRight="@+id/ButtonEliminarPregunta"
+            android:layout_alignEnd="@+id/ButtonEliminarPregunta"
+            android:weightSum="1"
+            android:id="@+id/Contenedor2Puntuacion">
+
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/emoticonPuntuacion"
+               />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/Contenedor3Puntuacion">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Puntaje"
+                    android:id="@+id/textViewLabelPuntuacion"
+                    android:gravity="center"
+                    style="@style/TestLoveApp_labels"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:id="@+id/puntuacion"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="50dp"
+                    android:textIsSelectable="false" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Contenedor4Puntuacion"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/Contenedor5Puntuacion">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tu contacto es:"
+                    android:id="@+id/textViewLabelnombreContacto"
+                    style="@style/TestLoveApp_labels"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:id="@+id/textViewnombreContacto" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+       </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabPreguntar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_send_white_24dp"
+        android:layout_gravity="right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="275dp"
+        android:layout_marginStart="263dp" />
+
+</RelativeLayout>

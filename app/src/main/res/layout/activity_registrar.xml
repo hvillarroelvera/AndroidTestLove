@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget37"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    style="@style/TestLoveApp_relativeLayouts">
+
+
+    <EditText
+        style="@style/TestLoveApp_textViews"
+        android:id="@+id/claveUsuarioRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="Contraseña"
+        android:layout_above="@+id/botonRegistrarRegistro"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:password="true"/>
+
+    <Button
+        style="@style/TestLoveApp_buttons"
+        android:id="@+id/botonRegistrarRegistro"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:text="Registrar"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="234dp" />
+
+    <EditText
+        style="@style/TestLoveApp_textViews"
+        android:id="@+id/nombreUsuarioRegistro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="15"
+        android:hint="Nombre de usuario"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/claveUsuarioRegistro"
+        android:layout_marginBottom="10dp"/>
+
+</RelativeLayout>

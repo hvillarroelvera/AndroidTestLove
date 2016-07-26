@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hector.testloveapp.Contacto"
+    style="@style/TestLoveApp_relativeLayouts">
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true">
+
+        <include android:id="@+id/appBar"
+            layout="@layout/toolbar" />
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/Contenedor2"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/appBar"
+            android:layout_marginBottom="50dp"
+            >
+            <LinearLayout
+                style="@style/TestLoveApp_linearLayouts2"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/Contenedor3"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="25dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Solicitudes Pendientes"
+                    android:id="@+id/textView"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Ninguna"
+                    android:id="@+id/txtSolicitudesPendientesNinguna" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabReenviarSolContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:src="@drawable/ic_autorenew_black_24dp"
+        android:layout_margin="25dp"
+
+        android:elevation="16dp" />
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabAgregarContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_margin="25dp"
+        android:elevation="16dp" />
+
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabEliminarContacto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:src="@drawable/ic_delete_black_24dp"
+        android:layout_margin="25dp"
+        android:elevation="16dp" />
+
+</android.support.design.widget.CoordinatorLayout>

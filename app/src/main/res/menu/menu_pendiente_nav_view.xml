@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/SolicitudesEnviadasMenuNavView"
+        android:icon="@drawable/ic_priority_high_black_24dp"
+        android:title="@string/menu_nav_view_solicitudesenviadas"
+        android:orderInCategory="1" />
+    <item android:id="@+id/SolicitudesRecibidasMenuNavView"
+        android:icon="@drawable/ic_playlist_add_white_24dp"
+        android:title="@string/menu_nav_view_solicitudesrecibidas"
+        android:orderInCategory="2" />
+    <item android:id="@+id/SolicitudesContestadasMenuNavView"
+        android:icon="@drawable/ic_playlist_add_white_24dp"
+        android:title="@string/menu_nav_view_solicitudescontestadas"
+        android:orderInCategory="3" />
+    <item android:id="@+id/PreguntasEnviadasMenuNavView"
+        android:icon="@drawable/ic_delete_sweep_white_24dp"
+        android:title="@string/menu_nav_view_preguntasenviadas"
+        android:orderInCategory="4" />
+    <item android:id="@+id/PreguntasRecibidasMenuNavView"
+        android:title="@string/menu_nav_view_preguntasrecibidas"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:orderInCategory="5" />
+    <item android:id="@+id/PreguntasContestadasMenuNavView"
+        android:title="@string/menu_nav_view_preguntascontestadas"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:orderInCategory="6" />
+    <item android:id="@+id/PuntuacionRecibidaMenuNavView"
+        android:title="@string/menu_nav_view_puntuacionesrecibida"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:orderInCategory="7" />
+</menu>
