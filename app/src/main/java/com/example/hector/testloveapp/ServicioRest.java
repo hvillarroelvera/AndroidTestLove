@@ -567,10 +567,11 @@ public class ServicioRest {
     }
 
 
-    public String enviarSolicitudContacto(String nom_user,String contacto)throws ConnectionException, HttpCallException {
+    public SolicitudDTO enviarSolicitudContacto(String nom_user,String contacto)throws ConnectionException, HttpCallException {
 
         HttpResponse resp=null;
         String resulStatus="";
+        SolicitudDTO solicitudDTO = new SolicitudDTO();
 
         //Construimos el objeto cliente en formato JSON
         JSONObject dato = new JSONObject();
@@ -594,13 +595,18 @@ public class ServicioRest {
             if(resulStatus.equals("0")||
             resulStatus.equals(Constantes.RESULTADO_STATUS_409)){
                 getErrorMessage(resp);
+            }else{
+                Header headers = resp.getFirstHeader("numeroSol");
+                solicitudDTO.setNumero(Long.parseLong(headers.getValue()));
+                solicitudDTO.setUserEmisor(nom_user);
+                solicitudDTO.setUserReceptor(contacto);
             }
             /*INI Se setea errorDescripcion*/
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return resulStatus;
+        return solicitudDTO;
     }
 
 
