@@ -25,8 +25,9 @@ public class TareaCerrarSesion extends AsyncTask<String,Integer,String> {
     private Context context;
     private Util util;
     private ProgressDialog dialogoProgreso;
+    private Intent intent;
 
-    public TareaCerrarSesion(Context context) {
+    public TareaCerrarSesion(Context context,Intent intent) {
         this.context = context;
         this.servicio = new ServicioRest(context);
         this.util = new Util();
@@ -35,6 +36,7 @@ public class TareaCerrarSesion extends AsyncTask<String,Integer,String> {
         dialogoProgreso.setMessage(Constantes.PROGRESSBAR_LABEL_REGISTRANDO);
         dialogoProgreso.setCancelable(true);
         dialogoProgreso.setMax(100);
+        this.intent = intent;
     }
 
     @Override
@@ -57,17 +59,12 @@ public class TareaCerrarSesion extends AsyncTask<String,Integer,String> {
     protected void onPostExecute(String result) {
 
         dialogoProgreso.dismiss();
-        if (this.resulTarea.equals("1")) {
+        if (this.resulTarea.equals("0")) {
             Toast.makeText(context, "Se ha cerrado la sesion!", Toast.LENGTH_SHORT).show();
-            Intent intent;
-            intent = new Intent(context, Inicio.class);
             context.startActivity(intent);
         } else {
-            String error = "";
-            if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                error=" ,"+servicio.getErrorDescripcion();
-            }
-            Toast.makeText(context, "No se ha cerrado sesion"+error, Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(context, "No se ha cerrado sesion"+resulTarea, Toast.LENGTH_SHORT).show();
         }
 
     }

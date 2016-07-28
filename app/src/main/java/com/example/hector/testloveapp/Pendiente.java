@@ -36,6 +36,7 @@ import com.example.hector.DAO.SolicitudContestadaDAO;
 import com.example.hector.DAO.SolicitudEnviadaDAO;
 import com.example.hector.DAO.SolicitudRecibidaDAO;
 import com.example.hector.adaptadores.AdaptadorSolicitudesPendientes;
+import com.example.hector.asynctasks.AsyncDelegate;
 import com.example.hector.asynctasks.TareaCerrarSesion;
 import com.example.hector.asynctasks.TareaEnviarSolicitudContacto;
 import com.example.hector.frangments.PreguntaContestadaFragment;
@@ -53,7 +54,7 @@ import DTO.PuntuacionDTO;
 import DTO.SolicitudDTO;
 
 public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFragment.OnSolicitudEnviadaListener,DialogoAgregar.ClickDialogoAgregarListener,
-        TareaEnviarSolicitudContacto.OnUpdateUI{
+        AsyncDelegate{
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -247,10 +248,6 @@ public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFrag
         }
     }
 
-    @Override
-    public void updateUI() {
-        Toast.makeText(Pendiente.this, "updateUITest", Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public void onBackPressed() {
@@ -311,10 +308,22 @@ public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFrag
     }
 
     public void asyncTaskEnviarSolicitudContacto(String texto){
-        new TareaEnviarSolicitudContacto(this,solicitudEnviadaDAO).execute(util.getUserCache(context), texto);
+        new TareaEnviarSolicitudContacto(this,this,solicitudEnviadaDAO).execute(util.getUserCache(context), texto);
     }
 
     public void asyncTaskTareaCerrarSesion(){
-        new TareaCerrarSesion(this).execute(util.getUserCache(context));
+        Intent intent;
+        intent = new Intent(context, Inicio.class);
+        new TareaCerrarSesion(this,intent).execute(util.getUserCache(context));
+    }
+
+    @Override
+    public void asyncComplete(boolean result) {
+    SolicitudEnviadaFragment solicitudEnviadaFragment = (SolicitudEnviadaFragment)getSupportFragmentManager().findFragmentById(R.id.SolicitudEnviadaFragment);
+        if(result==true){
+            solicitudEnviadaFragment.getDatos().add(solicitudEnviadaDAO.getSolEnviadaDTO().get(solicitudEnviadaDAO.getSolEnviadaDTO().size()-1));
+            solicitudEnviadaFragment.getAdaptador().notifyItemInserted(solicitudEnviadaFragment.getDatos().size()-1);
+        }
+
     }
 }

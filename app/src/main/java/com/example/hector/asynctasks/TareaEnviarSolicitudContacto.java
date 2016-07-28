@@ -29,12 +29,14 @@ public class TareaEnviarSolicitudContacto extends AsyncTask<String,Integer,Strin
     private OnUpdateUI onUpdateUI;
     private SolicitudEnviadaDAO solicitudEnviadaDAO;
     private SolicitudDTO solicitudDTO;
+    private AsyncDelegate asyncDelegate;
 
-    public TareaEnviarSolicitudContacto(Context context,SolicitudEnviadaDAO solicitudEnviadaDAO) {
+    public TareaEnviarSolicitudContacto(Context context,AsyncDelegate asyncDelegate,SolicitudEnviadaDAO solicitudEnviadaDAO) {
         this.context = context;
         this.servicio = new ServicioRest(context);
         this.util = new Util();
         this.solicitudEnviadaDAO = solicitudEnviadaDAO;
+        this.asyncDelegate = asyncDelegate;
         dialogoProgreso = new ProgressDialog(context);
         dialogoProgreso.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialogoProgreso.setMessage(Constantes.PROGRESSBAR_LABEL_REGISTRANDO);
@@ -50,6 +52,7 @@ public class TareaEnviarSolicitudContacto extends AsyncTask<String,Integer,Strin
         //Nos registramos en nuestro servidor
         try {
             solicitudDTO = servicio.enviarSolicitudContacto(params[0], params[1]);
+            solicitudEnviadaDAO.add(solicitudDTO);
         } catch (ConnectionException e) {
             resulTarea = e.getDescError();
         } catch (HttpCallException e) {
@@ -57,7 +60,7 @@ public class TareaEnviarSolicitudContacto extends AsyncTask<String,Integer,Strin
         }
 
         if(resulTarea.equals("0")){
-            solicitudEnviadaDAO.add(solicitudDTO);
+
             //util.registrarSolicitudContactoPendienteCache(context,params[1]);
         }
 
@@ -70,11 +73,12 @@ public class TareaEnviarSolicitudContacto extends AsyncTask<String,Integer,Strin
        dialogoProgreso.dismiss();
         if (this.resulTarea.equals("0")) {
             Toast.makeText(context, "Se envio solicitud de contacto!", Toast.LENGTH_SHORT).show();
-            //onUpdateUI.updateUI();
+            asyncDelegate.asyncComplete(true);
 
         } else {
-           // onUpdateUI.updateUI()
+
             Toast.makeText(context, "No se ha logrado enviar solicitud a contacto"+this.resulTarea, Toast.LENGTH_SHORT).show();
+            asyncDelegate.asyncComplete(false);
         }
 
     }

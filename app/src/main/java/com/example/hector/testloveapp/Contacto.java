@@ -32,6 +32,8 @@ import com.example.hector.DAO.PuntuacionRecibidaDAO;
 import com.example.hector.DAO.SolicitudContestadaDAO;
 import com.example.hector.DAO.SolicitudEnviadaDAO;
 import com.example.hector.DAO.SolicitudRecibidaDAO;
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
 
 import java.util.ArrayList;
 
@@ -268,7 +270,13 @@ public class Contacto extends AppCompatActivity implements DialogoAgregar.ClickD
             String msg = "";
             publishProgress(10);
             //Nos registramos en nuestro servidor
-            resulTarea= servicio.enviarSolicitudContacto(params[0], params[1]);
+            try {
+                servicio.enviarSolicitudContacto(params[0], params[1]);
+            } catch (ConnectionException e) {
+                e.printStackTrace();
+            } catch (HttpCallException e) {
+                e.printStackTrace();
+            }
 
             if(resulTarea.equals("1")||
                     resulTarea.equals(Constantes.RESULTADO_STATUS_409)){

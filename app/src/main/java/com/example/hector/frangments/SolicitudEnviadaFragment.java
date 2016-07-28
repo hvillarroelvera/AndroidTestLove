@@ -32,6 +32,7 @@ public class SolicitudEnviadaFragment extends Fragment{
     private FragmentManager fragmentManager;
     private DialogoAgregar dialogoAgregar;
     OnSolicitudEnviadaListener mCallback;
+    AdaptadorSolicitudesPendientes adaptador;
 
     public SolicitudEnviadaFragment() {
         // Required empty public constructor
@@ -48,7 +49,7 @@ public class SolicitudEnviadaFragment extends Fragment{
         recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolEnviadaPendiente);
         recView.setHasFixedSize(true);
 
-        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos);
+        adaptador = new AdaptadorSolicitudesPendientes(datos);
 
         recView.setAdapter(adaptador);
         recView.setLayoutManager(
@@ -68,6 +69,14 @@ public class SolicitudEnviadaFragment extends Fragment{
         });
 
         return rootView;
+    }
+
+    public AdaptadorSolicitudesPendientes getAdaptador() {
+        return adaptador;
+    }
+
+    public ArrayList<SolicitudDTO> getDatos() {
+        return datos;
     }
 
     public void setData(){
