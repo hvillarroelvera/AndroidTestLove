@@ -290,50 +290,10 @@ public class Inicio extends AppCompatActivity {
     }
 
     public void existOpenSesion(){
-        TareaRecuperarSesion tarea = new TareaRecuperarSesion();
-        tarea.execute();
+		intent = new Intent(Inicio.this,Pendiente.class);
+       new TareaRecuperarSesion(this,intent).execute();
     }
 
-    private class TareaRecuperarSesion extends AsyncTask<String,Integer,String>
-    {
-        ServicioRest servicio=new ServicioRest(getApplicationContext());
-        SessionDTO sessionDTO = new SessionDTO();
-        ContactoDTO cDTO=new ContactoDTO();
-        @Override
-        protected String doInBackground(String... params)
-        {
-            String msg = "";
-            sessionDTO= servicio.getSesionXUsuario(util.getUserCache(getApplicationContext()));
-            cDTO = servicio.recuperarContactoXUsuario(util.getUserCache(getApplicationContext()));
-
-            return msg;
-        }
-
-        protected void onPostExecute(String result) {
-            Log.d(TAG, "Entro a OnPostExecute");
-            if (sessionDTO != null && sessionDTO.getEstado()==Constantes.SESSION_STARTED) {
-                if(cDTO != null){
-                    intent = new Intent(Inicio.this, MenuPrincipal.class);
-                    init();
-                    setToOtherActivity();
-                    startActivity(intent);
-                }else{
-                    intent = new Intent(Inicio.this, Pendiente.class);
-                    init();
-                    setToOtherActivity();
-                    startActivity(intent);
-                }
-
-            } else {
-                /*String error = "";
-                if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                    error=" ,"+servicio.getErrorDescripcion();
-                }
-                Toast.makeText(Inicio.this, "No se ha cerrado sesion"+error, Toast.LENGTH_SHORT).show();*/
-            }
-
-        }
-    }
 
     /**
      * Inicializa DAOs recuperando solo valores desde SharedPreferences
