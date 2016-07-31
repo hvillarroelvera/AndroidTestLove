@@ -18,9 +18,11 @@ import DTO.SolicitudDTO;
 public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<AdaptadorSolicitudesPendientes.SolicitudViewHolder>  {
 
     private ArrayList<SolicitudDTO> datos;
+    private static RecyclerViewClickListener recyclerViewClickListener;
 
-    public AdaptadorSolicitudesPendientes(ArrayList<SolicitudDTO> datos) {
+    public AdaptadorSolicitudesPendientes(ArrayList<SolicitudDTO> datos,RecyclerViewClickListener recyclerViewClickListener) {
         this.datos = datos;
+        this.recyclerViewClickListener = recyclerViewClickListener;
     }
 
     public ArrayList<SolicitudDTO> getDatos() {
@@ -55,7 +57,7 @@ public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<Adaptad
 
 
     public static class SolicitudViewHolder
-            extends RecyclerView.ViewHolder {
+            extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView emisor;
         private TextView receptor;
@@ -66,11 +68,23 @@ public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<Adaptad
 
             emisor = (TextView)itemView.findViewById(R.id.nombreEmisorFragSolEnv);
             receptor = (TextView)itemView.findViewById(R.id.nombreReceptorFragSolEnv);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bindSolicitud(SolicitudDTO solicitudDTO) {
-            emisor.setText((solicitudDTO.getUserEmisor().equals("")) ? solicitudDTO.getUserEmisor() : "");
-            receptor.setText((solicitudDTO.getUserReceptor().equals("")) ? solicitudDTO.getUserReceptor() : "");
+            emisor.setText((solicitudDTO.getUserEmisor() != null
+                    && !solicitudDTO.getUserEmisor().equals(""))
+                    ? solicitudDTO.getUserEmisor() : "");
+            receptor.setText((solicitudDTO.getUserReceptor()!=null
+                            &&!solicitudDTO.getUserReceptor().equals(""))
+                            ? solicitudDTO.getUserReceptor() : "");
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            recyclerViewClickListener.recyclerViewListClicked(v,this.getLayoutPosition());
         }
     }
 }

@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.hector.adaptadores.AdaptadorSolicitudesPendientes;
+import com.example.hector.adaptadores.RecyclerViewClickListener;
 import com.example.hector.testloveapp.Constantes;
 import com.example.hector.testloveapp.R;
 import com.example.hector.frangments.dummy.DummyContent;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
 
 import DTO.SolicitudDTO;
 
-public class SolicitudRecibidaFragment extends Fragment {
+public class SolicitudRecibidaFragment extends Fragment implements RecyclerViewClickListener {
 
     private RecyclerView recView;
     private ArrayList<SolicitudDTO> datos = new ArrayList<SolicitudDTO>();
@@ -41,7 +43,7 @@ public class SolicitudRecibidaFragment extends Fragment {
         recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolRecibidaPendiente);
         recView.setHasFixedSize(true);
 
-        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos);
+        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos,this);
 
         recView.setAdapter(adaptador);
         recView.setLayoutManager(
@@ -56,5 +58,10 @@ public class SolicitudRecibidaFragment extends Fragment {
             datos = bundle.getParcelableArrayList(Constantes.PARCEL_LISTA_SOL_RECIBIDA);
         }
 
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        Toast.makeText(getActivity(), "Position clickeada " + position, Toast.LENGTH_SHORT).show();
     }
 }

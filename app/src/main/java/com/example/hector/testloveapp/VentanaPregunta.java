@@ -11,6 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
+
 import DTO.PreguntaDTO;
 
 public class VentanaPregunta extends AppCompatActivity implements DialogoPregunta.ClickDialogoPreguntaListener {
@@ -64,7 +67,13 @@ public class VentanaPregunta extends AppCompatActivity implements DialogoPregunt
             String msg = "";
 
 
-            resulTarea= servicio.enviarRespuestaPregunta(params[0],params[1],Long.parseLong(params[2]),params[3]);
+            try {
+                servicio.enviarRespuestaPregunta(params[0],params[1],Long.parseLong(params[2]),params[3]);
+            } catch (ConnectionException e) {
+                resulTarea = e.getDescError();
+            } catch (HttpCallException e) {
+                resulTarea = e.getDescError();
+            }
             publishProgress(70);
             return msg;
         }
@@ -72,17 +81,14 @@ public class VentanaPregunta extends AppCompatActivity implements DialogoPregunt
         protected void onPostExecute(String result) {
             Log.d(TAG, "Entro a OnPostExecute");
 
-            if (this.resulTarea.equals("1")) {
+            if (this.resulTarea.equals("0")) {
                 Toast.makeText(VentanaPregunta.this, "Se ha enviado tu respuesta", Toast.LENGTH_SHORT).show();
                 util.eliminarNumeroAndPreguntaRecibidaEnCache(context);
                 dialogoProgreso.dismiss();
                 finish();
             } else {
-                String error = "";
-                if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                    error=" ,"+servicio.getErrorDescripcion();
-                }
-                Toast.makeText(VentanaPregunta.this, "No se ha enviado tu respuesta"+error, Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(VentanaPregunta.this, "No se ha enviado tu respuesta"+resulTarea, Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
             }
 

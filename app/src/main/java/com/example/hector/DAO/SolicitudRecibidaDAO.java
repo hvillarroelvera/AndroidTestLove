@@ -44,7 +44,7 @@ public class SolicitudRecibidaDAO {
     public void add(SolicitudDTO solicitudRecibidaDTO){
         int indiceUltimoAdd = 0;
         indiceUltimoAdd = addTosolRecibidaDTO(solicitudRecibidaDTO);
-        addToUserPreferences(indiceUltimoAdd,solicitudRecibidaDTO.getNumero(),solicitudRecibidaDTO.getUserReceptor());
+        addToUserPreferences(indiceUltimoAdd,solicitudRecibidaDTO.getNumero(),solicitudRecibidaDTO.getUserEmisor());
     }
 
     private int addTosolRecibidaDTO(SolicitudDTO solicitudRecibidaDTO){
@@ -52,9 +52,9 @@ public class SolicitudRecibidaDAO {
         return solRecibidaDTO.indexOf(solicitudRecibidaDTO);
     }
 
-    private void addToUserPreferences(int indice,long numero, String nombreContacto){
+    private void addToUserPreferences(int indice,long numero, String nombreEmisor){
         CrudSharedPreferences crudSharedPreferences = new CrudSharedPreferences();
-        crudSharedPreferences.registrarEnListaCacheByTipoProperty(context, Constantes.PROPERTY_SOLICITUD_RECIBIDA, indice, Long.toString(numero), nombreContacto);
+        crudSharedPreferences.registrarEnListaCacheByTipoProperty(context, Constantes.PROPERTY_SOLICITUD_RECIBIDA, indice, Long.toString(numero), nombreEmisor);
     }
 
     public void delete(int index){
@@ -96,13 +96,13 @@ public class SolicitudRecibidaDAO {
     private SolicitudDTO getSolicitudRecibidaDTOFromString(String temp){
         SolicitudDTO solicitudRecibidaDTO = new SolicitudDTO();
         String numero = "";
-        String contacto = "";
+        String emisor = "";
         int index = 0;
         index = temp.indexOf("_");
         numero = temp.substring(0, index);
-        contacto = temp.substring(index+1,temp.length());
+        emisor = temp.substring(index+1,temp.length());
         solicitudRecibidaDTO.setNumero(Integer.parseInt(numero));
-        solicitudRecibidaDTO.setUserReceptor(contacto);
+        solicitudRecibidaDTO.setUserEmisor(emisor);
         return solicitudRecibidaDTO;
     }
 
@@ -111,7 +111,7 @@ public class SolicitudRecibidaDAO {
         for(int i = 0;i<solRecibidaDTO.size();i++){
             solicitudRecibidaDTO = new SolicitudDTO();
             solicitudRecibidaDTO = solRecibidaDTO.get(i);
-            addToUserPreferences(i,solicitudRecibidaDTO.getNumero(),solicitudRecibidaDTO.getUserReceptor());
+            addToUserPreferences(i,solicitudRecibidaDTO.getNumero(),solicitudRecibidaDTO.getUserEmisor());
         }
     }
 }

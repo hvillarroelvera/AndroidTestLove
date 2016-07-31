@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hector.adaptadores.AdaptadorSolicitudesPendientes;
+import com.example.hector.adaptadores.RecyclerViewClickListener;
 import com.example.hector.testloveapp.Constantes;
 import com.example.hector.testloveapp.R;
 
@@ -19,7 +20,7 @@ import DTO.SolicitudDTO;
 /**
  * Created by hvillarroel on 21-07-2016.
  */
-public class SolicitudContestadaFragment extends Fragment {
+public class SolicitudContestadaFragment extends Fragment implements RecyclerViewClickListener {
 
     private RecyclerView recView;
     private ArrayList<SolicitudDTO> datos = new ArrayList<SolicitudDTO>();
@@ -38,7 +39,7 @@ public class SolicitudContestadaFragment extends Fragment {
         recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolContestadaPendiente);
         recView.setHasFixedSize(true);
 
-        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos);
+        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos,this);
 
         recView.setAdapter(adaptador);
         recView.setLayoutManager(
@@ -55,4 +56,8 @@ public class SolicitudContestadaFragment extends Fragment {
 
     }
 
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+
+    }
 }

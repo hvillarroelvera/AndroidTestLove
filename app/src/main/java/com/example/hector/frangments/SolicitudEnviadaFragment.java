@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.hector.DAO.SolicitudEnviadaDAO;
 import com.example.hector.adaptadores.AdaptadorSolicitudesPendientes;
+import com.example.hector.adaptadores.RecyclerViewClickListener;
 import com.example.hector.testloveapp.Constantes;
 import com.example.hector.testloveapp.DialogoAgregar;
 import com.example.hector.testloveapp.R;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 
 import DTO.SolicitudDTO;
 
-public class SolicitudEnviadaFragment extends Fragment{
+public class SolicitudEnviadaFragment extends Fragment implements RecyclerViewClickListener{
 
     private RecyclerView recView;
     private ArrayList<SolicitudDTO> datos = new ArrayList<SolicitudDTO>();
@@ -49,7 +50,7 @@ public class SolicitudEnviadaFragment extends Fragment{
         recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolEnviadaPendiente);
         recView.setHasFixedSize(true);
 
-        adaptador = new AdaptadorSolicitudesPendientes(datos);
+        adaptador = new AdaptadorSolicitudesPendientes(datos,this);
 
         recView.setAdapter(adaptador);
         recView.setLayoutManager(
@@ -99,6 +100,12 @@ public class SolicitudEnviadaFragment extends Fragment{
             throw new ClassCastException(activity.toString()
                     + " must implement OnSolicitudEnviadaListener");
         }
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        Toast.makeText(getActivity(), "Position clickeada "+position, Toast.LENGTH_SHORT).show();
+
     }
 
 

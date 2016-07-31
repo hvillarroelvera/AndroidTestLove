@@ -23,6 +23,9 @@ import com.example.hector.DAO.PuntuacionRecibidaDAO;
 import com.example.hector.DAO.SolicitudContestadaDAO;
 import com.example.hector.DAO.SolicitudEnviadaDAO;
 import com.example.hector.DAO.SolicitudRecibidaDAO;
+import com.example.hector.asynctasks.TareaRecuperarSesion;
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
@@ -51,6 +54,7 @@ public class Inicio extends AppCompatActivity {
     private String regid="";
     ProgressDialog dialogoProgreso;
     private Intent intent;
+    private String resulTarea="0";
     private SolicitudEnviadaDAO solicitudEnviadaDAO;
     private SolicitudRecibidaDAO solicitudRecibidaDAO;
     private SolicitudContestadaDAO solicitudContestadaDAO;
@@ -103,7 +107,7 @@ public class Inicio extends AppCompatActivity {
     private class TareaLogin extends AsyncTask<String,Integer,String>
     {
         ServicioRest servicio=new ServicioRest(context);
-        String resultadoLogin="";
+        String resultadoLogin="0";
         String resulActualizarGcm="";
         GcmDTO gcmdto=new GcmDTO();
         ContactoDTO cDTO=new ContactoDTO();
@@ -129,13 +133,25 @@ public class Inicio extends AppCompatActivity {
                     //Si no es el mismo usuario se recuperan datos desde el servidor y se validan
                     //Si no es el mismo regId se recuperan datos desde el servidor y se validan
                     publishProgress(60);
-                    resultadoLogin = servicio.loguearUsuario(params[0], params[1]);
-                    if(resultadoLogin.equals("1")) {
+                    try {
+                        servicio.loguearUsuario(params[0], params[1]);
+                    } catch (ConnectionException e) {
+                        resultadoLogin = e.getDescError();
+                    } catch (HttpCallException e) {
+                        resultadoLogin = e.getDescError();
+                    }
+                    if(resultadoLogin.equals("0")) {
                         publishProgress(70);
-                        gcmdto = servicio.recuperarGcmXUsuario(params[0]);
-                        cDTO = servicio.recuperarContactoXUsuario(params[0]);
-                        pDTO = servicio.getPreguntasXUsuario(params[0]);
-                        listaSolicitudes = servicio.getSolicitudContacto(params[0]);
+                        try {
+                            gcmdto = servicio.recuperarGcmXUsuario(params[0]);
+                            cDTO = servicio.recuperarContactoXUsuario(params[0]);
+                            pDTO = servicio.getPreguntasXUsuario(params[0]);
+                            listaSolicitudes = servicio.getSolicitudContacto(params[0]);
+                        } catch (ConnectionException e) {
+                            resulTarea = e.getDescError();
+                        } catch (HttpCallException e) {
+                            resulTarea = e.getDescError();
+                        }
                          /*Falta implementar servicio para obetener puntuacion*/
 
                         /*Se limpia cache*/
@@ -175,8 +191,14 @@ public class Inicio extends AppCompatActivity {
 
                             /*actualizar informacion en servidor*/
                             newExpirationTime = System.currentTimeMillis() + Constantes.EXPIRATION_TIME_MS;
-                            resulActualizarGcm = servicio.actualizarGcm(params[0],regid,util.getAppVersion(context),newExpirationTime);
-                                if(resulActualizarGcm.equals("1")){
+                            try {
+                                servicio.actualizarGcm(params[0],regid,util.getAppVersion(context),newExpirationTime);
+                            } catch (ConnectionException e) {
+                                resulActualizarGcm = e.getDescError();
+                            } catch (HttpCallException e) {
+                                resulActualizarGcm = e.getDescError();
+                            }
+                            if(resulActualizarGcm.equals("0")){
                                     util.actualizarDatosCacheFromServidor(context, params[0], regid,newExpirationTime);
                                 }
                         }
@@ -193,8 +215,14 @@ public class Inicio extends AppCompatActivity {
                     regid = gcm.register(Constantes.SENDER_ID);
                     /*actualizar informacion en servidor*/
                     newExpirationTime = System.currentTimeMillis() + Constantes.EXPIRATION_TIME_MS;
-                    resulActualizarGcm = servicio.actualizarGcm(params[0],regid,util.getAppVersion(context),newExpirationTime);
-                    if(resulActualizarGcm.equals("1")){
+                    try {
+                        servicio.actualizarGcm(params[0],regid,util.getAppVersion(context),newExpirationTime);
+                    } catch (ConnectionException e) {
+                        resulActualizarGcm = e.getDescError();
+                    } catch (HttpCallException e) {
+                        resulActualizarGcm = e.getDescError();
+                    }
+                    if(resulActualizarGcm.equals("0")){
                         util.actualizarDatosCacheFromServidor(context, params[0], regid,newExpirationTime);
                     }
 
@@ -202,8 +230,14 @@ public class Inicio extends AppCompatActivity {
 
                 }else{
                     publishProgress(70);
-                    resultadoLogin = servicio.loguearUsuario(params[0], params[1]);
-                    if(resultadoLogin.equals("1")) {
+                    try {
+                        servicio.loguearUsuario(params[0], params[1]);
+                    } catch (ConnectionException e) {
+                        resultadoLogin = e.getDescError();
+                    } catch (HttpCallException e) {
+                        resultadoLogin = e.getDescError();
+                    }
+                    if(resultadoLogin.equals("0")) {
 
                         init();
 
@@ -251,7 +285,7 @@ public class Inicio extends AppCompatActivity {
         protected void onPostExecute(String result) {
             Log.d(TAG,"Entro a OnPostExecute");
 
-                if(this.resultadoLogin.equals("1")){
+                if(this.resultadoLogin.equals("0")){
                     Toast.makeText(Inicio.this, "Login Exitoso!",Toast.LENGTH_SHORT).show();
 
                     /*Se registra inicio de session*/
@@ -276,11 +310,8 @@ public class Inicio extends AppCompatActivity {
 
 
                 }else{
-                    String error = "";
-                    if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                        error=" ,"+servicio.getErrorDescripcion();
-                    }
-                    Toast.makeText(Inicio.this, "Intentelo nuevamente!"+error,Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(Inicio.this, "Intentelo nuevamente!"+resultadoLogin,Toast.LENGTH_SHORT).show();
                     dialogoProgreso.dismiss();
                 };
 

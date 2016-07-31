@@ -16,6 +16,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
+
 public class VentanaRespuesta extends AppCompatActivity implements DialogoRespuesta.ClickDialogoRespuestaListener {
 
     public static final String TAG = "GCMTestLoveApp";
@@ -73,7 +76,13 @@ public class VentanaRespuesta extends AppCompatActivity implements DialogoRespue
             publishProgress(10);
            String msg = "";
 
-           resulTarea= servicio.enviarPuntuacion(context,params[0], params[1]);
+            try {
+                servicio.enviarPuntuacion(context,params[0], params[1]);
+            } catch (ConnectionException e) {
+                resulTarea = e.getDescError();
+            } catch (HttpCallException e) {
+                resulTarea = e.getDescError();
+            }
             publishProgress(60);
             util.registrarResultadoEnCache(context, params[1]);
             publishProgress(80);
@@ -83,7 +92,7 @@ public class VentanaRespuesta extends AppCompatActivity implements DialogoRespue
         protected void onPostExecute(String result) {
             Log.d(TAG, "Entro a OnPostExecute");
 
-            if (this.resulTarea.equals("1")) {
+            if (this.resulTarea.equals("0")) {
                 Toast.makeText(VentanaRespuesta.this, "Se ha enviado el resultado", Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
                 //util.eliminarPuntuacionContestadasEnCache(context);
@@ -92,11 +101,8 @@ public class VentanaRespuesta extends AppCompatActivity implements DialogoRespue
                 startActivity(intent);
 
             } else {
-                String error = "";
-                if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                    error=" ,"+servicio.getErrorDescripcion();
-                }
-                Toast.makeText(VentanaRespuesta.this, "No se ha enviado el resultado"+error, Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(VentanaRespuesta.this, "No se ha enviado el resultado"+resulTarea, Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
             }
 

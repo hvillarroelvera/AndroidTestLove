@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
+
 public class VentanaDialogo extends AppCompatActivity implements DialogoSolicitudContacto.ClickDialogoSolicitudContactoListener {
 
     public static final String TAG = "GCMTestLoveApp";
@@ -71,7 +74,13 @@ public class VentanaDialogo extends AppCompatActivity implements DialogoSolicitu
             String msg = "";
 
 
-            resulTarea= servicio.registrarContacto(params[0],params[1],Short.parseShort(params[2]));
+            try {
+                servicio.registrarContacto(params[0],params[1],Short.parseShort(params[2]));
+            } catch (ConnectionException e) {
+                resulTarea = e.getDescError();
+            } catch (HttpCallException e) {
+                resulTarea = e.getDescError();
+            }
             publishProgress(70);
 
             return msg;
@@ -80,17 +89,14 @@ public class VentanaDialogo extends AppCompatActivity implements DialogoSolicitu
         protected void onPostExecute(String result) {
             Log.d(TAG, "Entro a OnPostExecute");
 
-            if (this.resulTarea.equals("1")) {
+            if (this.resulTarea.equals("0")) {
                 Toast.makeText(VentanaDialogo.this, "Ya te has registrado como contacto", Toast.LENGTH_SHORT).show();
                 util.eliminarUsuarioSolicitanteEnCache(context);
                 dialogoProgreso.dismiss();
                 finish();
             } else {
-                String error = "";
-                if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                    error=" ,"+servicio.getErrorDescripcion();
-                }
-                Toast.makeText(VentanaDialogo.this, "No te has registrado como contacto"+error, Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(VentanaDialogo.this, "No te has registrado como contacto"+resulTarea, Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
             }
 

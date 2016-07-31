@@ -779,6 +779,19 @@ public class Util {
         return preguntaDTO;
     }
 
+    public SolicitudDTO getSolicitudDTOFromMsgGcm(String msgGcm){
+        SolicitudDTO solicitudDTO = new SolicitudDTO();
+        String numeroSolicitud = "";
+        String emisor = "";
+        int index = 0;
+        index = msgGcm.indexOf(":");
+        numeroSolicitud = msgGcm.substring(0, index);
+        emisor = msgGcm.substring(index+1,msgGcm.length());
+        solicitudDTO.setNumero(Long.parseLong(numeroSolicitud));
+        solicitudDTO.setUserEmisor(emisor);
+        return solicitudDTO;
+    }
+
     public PreguntaDTO getPreguntaDTOFromCache(String temp){
         PreguntaDTO preguntaDTO = new PreguntaDTO();
         String numeroPregunta = "";

@@ -262,31 +262,64 @@ public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFrag
     public void getDataFromOtherActivity(){
         /*get sol enviada*/
         ArrayList<SolicitudDTO> solEnviadaDTO = (ArrayList<SolicitudDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_SOL_ENVIADA);
-        solicitudEnviadaDAO = new SolicitudEnviadaDAO(solEnviadaDTO,context);
+        if(solEnviadaDTO == null){
+            solicitudEnviadaDAO = new SolicitudEnviadaDAO(context);
+        }else{
+            solicitudEnviadaDAO = new SolicitudEnviadaDAO(solEnviadaDTO,context);
+        }
          /*get sol enviada*/
         /*get sol recibida*/
         ArrayList<SolicitudDTO> solRecibidaDTO = (ArrayList<SolicitudDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_SOL_RECIBIDA);
-        solicitudRecibidaDAO = new SolicitudRecibidaDAO(solRecibidaDTO,context);
+       if(solRecibidaDTO == null){
+           solicitudRecibidaDAO = new SolicitudRecibidaDAO(context);
+       }else{
+           solicitudRecibidaDAO = new SolicitudRecibidaDAO(solRecibidaDTO,context);
+       }
         /*get sol recibida*/
         /*get sol contestada*/
         ArrayList<SolicitudDTO> solContestadaDTO = (ArrayList<SolicitudDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_SOL_CONTESTADA);
-        solicitudContestadaDAO = new SolicitudContestadaDAO(solContestadaDTO,context);
+        if(solContestadaDTO == null){
+            solicitudContestadaDAO = new SolicitudContestadaDAO(context);
+        }else{
+            solicitudContestadaDAO = new SolicitudContestadaDAO(solContestadaDTO,context);
+        }
+
         /*get sol contestada*/
         /*get sol contestada*/
         ArrayList<PreguntaDTO> preguntaEnviadaDTO = (ArrayList<PreguntaDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_PREG_ENVIADA);
-        preguntaEnviadaDAO = new PreguntaEnviadaDAO(preguntaEnviadaDTO,context);
+      if(preguntaEnviadaDTO == null){
+          preguntaEnviadaDAO = new PreguntaEnviadaDAO(context);
+      }else{
+          preguntaEnviadaDAO = new PreguntaEnviadaDAO(preguntaEnviadaDTO,context);
+      }
+
         /*get sol contestada*/
         /*get sol contestada*/
         ArrayList<PreguntaDTO> preguntaRecibidaDTO = (ArrayList<PreguntaDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_PREG_RECIBIDA);
-        preguntaRecibidaDAO = new PreguntaRecibidaDAO(preguntaRecibidaDTO,context);
+        if(preguntaRecibidaDTO == null){
+            preguntaRecibidaDAO = new PreguntaRecibidaDAO(context);
+        }else{
+            preguntaRecibidaDAO = new PreguntaRecibidaDAO(preguntaRecibidaDTO,context);
+        }
+
         /*get sol contestada*/
         /*get sol contestada*/
         ArrayList<PreguntaDTO> preguntaContestadaDTO = (ArrayList<PreguntaDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_PREG_CONTESTADA);
-        preguntaContestadaDAO = new PreguntaContestadaDAO(preguntaContestadaDTO,context);
+        if(preguntaContestadaDTO == null){
+            preguntaContestadaDAO = new PreguntaContestadaDAO(context);
+        }else{
+            preguntaContestadaDAO = new PreguntaContestadaDAO(preguntaContestadaDTO,context);
+        }
+
         /*get sol contestada*/
         /*get sol contestada*/
         ArrayList<PuntuacionDTO> puntuacionRecibidaDTO = (ArrayList<PuntuacionDTO>)util.getArrayListFromOtherActivity(intent, Constantes.PARCEL_LISTA_PUNT_RECIBIDA);
-        puntuacionRecibidaDAO = new PuntuacionRecibidaDAO(puntuacionRecibidaDTO,context);
+        if(puntuacionRecibidaDTO == null){
+            puntuacionRecibidaDAO = new PuntuacionRecibidaDAO(context);
+        }else{
+            puntuacionRecibidaDAO = new PuntuacionRecibidaDAO(puntuacionRecibidaDTO,context);
+        }
+
         /*get sol contestada*/
 
 
@@ -319,9 +352,9 @@ public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFrag
 
     @Override
     public void asyncComplete(boolean result) {
-    SolicitudEnviadaFragment solicitudEnviadaFragment = (SolicitudEnviadaFragment)getSupportFragmentManager().findFragmentById(R.id.SolicitudEnviadaFragment);
+    SolicitudEnviadaFragment solicitudEnviadaFragment = (SolicitudEnviadaFragment)getSupportFragmentManager().findFragmentById(R.id.content_frame);
         if(result==true){
-            solicitudEnviadaFragment.getDatos().add(solicitudEnviadaDAO.getSolEnviadaDTO().get(solicitudEnviadaDAO.getSolEnviadaDTO().size()-1));
+           // solicitudEnviadaFragment.getDatos().add(solicitudEnviadaDAO.getSolEnviadaDTO().get(solicitudEnviadaDAO.getSolEnviadaDTO().size()-1));
             solicitudEnviadaFragment.getAdaptador().notifyItemInserted(solicitudEnviadaFragment.getDatos().size()-1);
         }
 

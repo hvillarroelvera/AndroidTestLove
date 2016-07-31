@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -161,7 +163,13 @@ public class Registrar extends AppCompatActivity {
                     Log.d(TAG, "PASO 3");
                     publishProgress(70);
 
-                    resulTarea=servicio.registrarUsuario(params[0],params[1], regid,appVersion,System.currentTimeMillis() + Constantes.EXPIRATION_TIME_MS);
+                    try {
+                        servicio.registrarUsuario(params[0],params[1], regid,appVersion,System.currentTimeMillis() + Constantes.EXPIRATION_TIME_MS);
+                    } catch (ConnectionException e) {
+                        resulTarea = e.getDescError();
+                    } catch (HttpCallException e) {
+                        resulTarea = e.getDescError();
+                    }
                     publishProgress(90);
                     if(resulTarea.equals("1")){
                         registrado=true;
@@ -195,7 +203,7 @@ public class Registrar extends AppCompatActivity {
         protected void onPostExecute(String result) {
             Log.d(TAG, "Entro a OnPostExecute");
 
-            if(this.resulTarea.equals("1")){
+            if(this.resulTarea.equals("0")){
                 Toast.makeText(Registrar.this, "Registro Exitoso!",Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
                 Intent intent;
@@ -203,11 +211,8 @@ public class Registrar extends AppCompatActivity {
                 startActivity(intent);
 
             }else{
-                String error = "";
-                if( !servicio.getErrorDescripcion().equals("") &&  servicio.getErrorDescripcion() != null){
-                    error=" ,"+servicio.getErrorDescripcion();
-                }
-                Toast.makeText(Registrar.this, "No te has podido registrar"+error,Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(Registrar.this, "No te has podido registrar"+resulTarea,Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
             };
 

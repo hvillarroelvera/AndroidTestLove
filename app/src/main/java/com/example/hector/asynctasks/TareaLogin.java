@@ -1,3 +1,37 @@
+package com.example.hector.asynctasks;
+
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.widget.Toast;
+
+import com.example.hector.DAO.PreguntaContestadaDAO;
+import com.example.hector.DAO.PreguntaEnviadaDAO;
+import com.example.hector.DAO.PreguntaRecibidaDAO;
+import com.example.hector.DAO.PuntuacionRecibidaDAO;
+import com.example.hector.DAO.SolicitudContestadaDAO;
+import com.example.hector.DAO.SolicitudEnviadaDAO;
+import com.example.hector.DAO.SolicitudRecibidaDAO;
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
+import com.example.hector.testloveapp.Constantes;
+import com.example.hector.testloveapp.Inicio;
+import com.example.hector.testloveapp.Pendiente;
+import com.example.hector.testloveapp.ServicioRest;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import DTO.ContactoDTO;
+import DTO.GcmDTO;
+import DTO.PreguntaDTO;
+import DTO.PreguntasDTO;
+import DTO.SolicitudDTO;
+import com.example.hector.testloveapp.Util;
+
 public class TareaLogin extends AsyncTask<String,Integer,String>
     {
         private ServicioRest servicio;
@@ -7,7 +41,7 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
         private GcmDTO gcmdto;
         private ContactoDTO cDTO;
         private PreguntasDTO pDTO;
-        private ArrayList<SolicitudDTO>listaSolicitudes;
+        private ArrayList<SolicitudDTO> listaSolicitudes;
         private SolicitudDTO solicitudDTO;
         private int resultCompCache=0;
         private long newExpirationTime = 0;
@@ -15,8 +49,18 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
 		private ProgressDialog dialogoProgreso;
 		public static GoogleCloudMessaging gcm;
         private String regid="";
+        private Context context;
+        private Util util;
+        private SolicitudEnviadaDAO solicitudEnviadaDAO;
+        private SolicitudRecibidaDAO solicitudRecibidaDAO;
+        private SolicitudContestadaDAO solicitudContestadaDAO;
+        private PreguntaEnviadaDAO preguntaEnviadaDAO;
+        private PreguntaRecibidaDAO preguntaRecibidaDAO;
+        private PreguntaContestadaDAO preguntaContestadaDAO;
+        private PuntuacionRecibidaDAO puntuacionRecibidaDAO;
+        private AsyncDelegate asyncDelegate;
 		
-		public TareaLogin(Context context,Intent intent) {
+		public TareaLogin(Context context,Intent intent,AsyncDelegate asyncDelegate) {
         this.context = context;
         this.servicio = new ServicioRest(context);
         this.util = new Util();
@@ -24,7 +68,8 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
 		this.cDTO=new ContactoDTO();
 		this.pDTO=new PreguntasDTO();
 		this.listaSolicitudes = new ArrayList<SolicitudDTO>();
-		this,solicitudDTO = new SolicitudDTO();
+		this.solicitudDTO = new SolicitudDTO();
+            this.asyncDelegate = asyncDelegate;
 		this.intent = intent;
         dialogoProgreso = new ProgressDialog(context);
         dialogoProgreso.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -36,7 +81,7 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
         @Override
         protected String doInBackground(String... params) {
             String msg = "";
-            Log.i(TAG, "INI doInBackground");
+
 
             try {
                 publishProgress(10);
@@ -102,7 +147,11 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
                             }
 
                             //Nos registramos en los servidores de GCM
-                            regid = gcm.register(Constantes.SENDER_ID);
+                            try {
+                                regid = gcm.register(Constantes.SENDER_ID);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
 
                             /*actualizar informacion en servidor*/
@@ -155,7 +204,7 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
 					}
                     if(resultadoLogin.equals("0")) {
 
-                        init();
+                        //init();
 
                     }
 
@@ -171,7 +220,7 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
         }
             @Override
         protected void onCancelled() {
-            Toast.makeText(context, "Login cancelado" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Login cancelado", Toast.LENGTH_SHORT).show();
                 dialogoProgreso.dismiss();
 
         }
@@ -199,7 +248,7 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
 
 
         protected void onPostExecute(String result) {
-            Log.d(TAG,"Entro a OnPostExecute");
+
 
                 if(this.resultadoLogin.equals("0")){
                     Toast.makeText(context, "Login Exitoso!",Toast.LENGTH_SHORT).show();
@@ -219,14 +268,14 @@ public class TareaLogin extends AsyncTask<String,Integer,String>
                         startActivity(intent);*/
 						/*Por el momento siempre se redireccionara a Pendiente*/
 						 intent = new Intent(context, Pendiente.class);
-                            init();
+                            /*init();
                             setToOtherActivity();
-                            startActivity(intent);
+                            startActivity(intent);*/
                         }else {
                             intent = new Intent(context, Pendiente.class);
-                            init();
+                            /*init();
                             setToOtherActivity();
-                            startActivity(intent);
+                            startActivity(intent);*/
                         }
 
 

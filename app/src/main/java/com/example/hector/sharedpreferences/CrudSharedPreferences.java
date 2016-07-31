@@ -21,7 +21,10 @@ public class CrudSharedPreferences {
             SharedPreferences.Editor editor = prefs.edit();
 
         if(property.equals(Constantes.PROPERTY_SOLICITUD_ENVIADA)) {
-            editor.putString(property + indice,params[0]+"_"+params[1]);
+            editor.putString(property + indice, params[0] + "_" + params[1]);
+
+        }else if(property.equals(Constantes.PROPERTY_SOLICITUD_RECIBIDA)){
+            editor.putString(property + indice, params[0] + "_" + params[1]);
 
         }else if(property.equals(Constantes.PROPERTY_PREGUNTA_CONTESTADA)) {
             editor.putString(property + indice,params[0]);

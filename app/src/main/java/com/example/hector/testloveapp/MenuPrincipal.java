@@ -245,7 +245,7 @@ public class MenuPrincipal extends AppCompatActivity implements DialogoPreguntas
             Log.i(TAG,"Usuario= "+params[0]);
             Log.i(TAG, "Pregunta= " +params[1]);
             publishProgress(10);
-           resulTarea= servicio.registrarPregunta(context,params[0],params[1]);
+           //resulTarea= servicio.registrarPregunta(context,params[0],params[1]);
             publishProgress(70);
 
             return msg;
@@ -308,7 +308,7 @@ public class MenuPrincipal extends AppCompatActivity implements DialogoPreguntas
             String msg = "";
 
             publishProgress(10);
-            resulTarea= servicio.preguntar(params[0], params[1],Long.parseLong(params[2]));
+            //resulTarea= servicio.preguntar(params[0], params[1],Long.parseLong(params[2]));
 
             publishProgress(70);
             return msg;
@@ -369,7 +369,7 @@ public class MenuPrincipal extends AppCompatActivity implements DialogoPreguntas
         {
             String msg = "";
             publishProgress(10);
-            resulTarea= servicio.cerrarSesion(params[0]);
+           // resulTarea= servicio.cerrarSesion(params[0]);
             publishProgress(70);
 
             return msg;
@@ -432,7 +432,7 @@ public class MenuPrincipal extends AppCompatActivity implements DialogoPreguntas
         {
             String msg = "";
             publishProgress(10);
-            resulTarea= servicio.eliminarPregunta(Long.parseLong(params[0]));
+           // resulTarea= servicio.eliminarPregunta(Long.parseLong(params[0]));
             listaPreguntas = util.eliminarPreguntaEnCache(context,listaPreguntas,Integer.parseInt(params[1]));
 
             publishProgress(70);
@@ -502,26 +502,26 @@ public class MenuPrincipal extends AppCompatActivity implements DialogoPreguntas
             publishProgress(10);
 
             puntuacionDTO.setIdContacto(Long.parseLong(params[0]));
-            resulTarea =servicio.eliminarPuntuacionByIdContacto(puntuacionDTO);
+           // resulTarea =servicio.eliminarPuntuacionByIdContacto(puntuacionDTO);
             publishProgress(20);
 
             if(resulTarea.equals("1")){
                 puntuacionPendienteDTO.setContacto(params[1]);
-                resulTarea =servicio.eliminarAllPuntuacionPendienteByContacto(puntuacionPendienteDTO);
+            //    resulTarea =servicio.eliminarAllPuntuacionPendienteByContacto(puntuacionPendienteDTO);
                 publishProgress(30);
             }
             if(resulTarea.equals("1")){
                 respuestaPendienteDTO.setContacto(params[1]);
-                resulTarea =servicio.eliminarAllRespuestaPendienteByContacto(respuestaPendienteDTO);
+               // resulTarea =servicio.eliminarAllRespuestaPendienteByContacto(respuestaPendienteDTO);
                 publishProgress(40);
             }
             if(resulTarea.equals("1")){
                 preguntaPendienteDTO.setContacto(params[1]);
-                resulTarea =servicio.eliminarAllPreguntaPendienteByContacto(preguntaPendienteDTO);
+               // resulTarea =servicio.eliminarAllPreguntaPendienteByContacto(preguntaPendienteDTO);
                 publishProgress(50);
             }
             if(resulTarea.equals("1")) {
-                resulTarea = servicio.eliminarContacto(Long.parseLong(params[0]));
+               // resulTarea = servicio.eliminarContacto(Long.parseLong(params[0]));
                 publishProgress(60);
             }
             if(resulTarea.equals("1")) {

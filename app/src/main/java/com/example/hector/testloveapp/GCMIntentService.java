@@ -11,10 +11,14 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.hector.DAO.SolicitudEnviadaDAO;
+import com.example.hector.DAO.SolicitudRecibidaDAO;
+import com.example.hector.exceptions.ConnectionException;
+import com.example.hector.exceptions.HttpCallException;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import DTO.ContactoDTO;
 import DTO.PreguntaDTO;
+import DTO.SolicitudDTO;
 
 /**
  * Created by hector on 21-06-2015.
@@ -74,6 +78,8 @@ public class GCMIntentService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         Util util=new Util();
+        SolicitudRecibidaDAO solicitudRecibidaDAO = new SolicitudRecibidaDAO(getApplicationContext());
+        SolicitudDTO solicitudDTO = new SolicitudDTO();
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -81,14 +87,18 @@ public class GCMIntentService extends IntentService {
                         .setVibrate(new long[]{0,500, 300,500})
                         .setSmallIcon(android.R.drawable.stat_notify_chat)
                         .setContentTitle("TestLove")
-                        .setContentText("El usuario " + msg + " desea ser tu amigo!!");
+                        .setContentText("El usuario " + msg + " desea ser tu amigo!!")
+                        .setAutoCancel(true);
 
-        Intent notIntent =  new Intent(this, VentanaDialogo.class);
+        Intent notIntent =  new Intent(this, Pendiente.class);
 
         PendingIntent contIntent = PendingIntent.getActivity(
                 this, 0, notIntent, 0);
-        Log.i(TAG,getApplicationContext().getPackageResourcePath());
-        util.registrarUsuarioSolicitanteEnCache(getApplicationContext(),msg);
+        Log.i(TAG, getApplicationContext().getPackageResourcePath());
+        //util.registrarUsuarioSolicitanteEnCache(getApplicationContext(), msg);
+
+        solicitudDTO = util.getSolicitudDTOFromMsgGcm(msg);
+        solicitudRecibidaDAO.add(solicitudDTO);
         mBuilder.setContentIntent(contIntent);
 
         mNotificationManager.notify(NOTIF_ALERTA_ID, mBuilder.build());
@@ -108,14 +118,21 @@ public class GCMIntentService extends IntentService {
                         .setVibrate(new long[]{0,500, 300,500})
                         .setSmallIcon(android.R.drawable.star_big_on)
                         .setContentTitle("TestLove")
-                        .setContentText("El usuario "+msg+" ha aceptado ser tu amigo!!");
+                        .setContentText("El usuario "+msg+" ha aceptado ser tu amigo!!")
+                        .setAutoCancel(true);
 
         Intent notIntent =  new Intent(this, MenuPrincipal.class);
 
         PendingIntent contIntent = PendingIntent.getActivity(
                 this, 0, notIntent, 0);
 
-        contactoDTO = servicioRest.recuperarContactoXUsuario(util.getUserCache(getApplicationContext()));
+        try {
+            contactoDTO = servicioRest.recuperarContactoXUsuario(util.getUserCache(getApplicationContext()));
+        } catch (ConnectionException e) {
+            e.printStackTrace();
+        } catch (HttpCallException e) {
+            e.printStackTrace();
+        }
         util.registrarContactoEnCache(getApplicationContext(), contactoDTO.getContacto(), Long.toString(contactoDTO.getId_contacto()));
         /*util.eliminarSolicitudContactoPendienteCache(getApplicationContext());*/
         solicitudEnviadaDAO.deleteByNombreContacto(contactoDTO.getContacto());
@@ -140,7 +157,8 @@ public class GCMIntentService extends IntentService {
                         .setVibrate(new long[]{0,500, 300,500})
                         .setSmallIcon(android.R.drawable.star_off)
                         .setContentTitle("TestLove")
-                        .setContentText("Tu contacto te ha preguntado:"+preguntaDTO.getPregunta());
+                        .setContentText("Tu contacto te ha preguntado:"+preguntaDTO.getPregunta())
+                        .setAutoCancel(true);
 
         Intent notIntent =  new Intent(this, VentanaPregunta.class);
 
@@ -165,7 +183,8 @@ public class GCMIntentService extends IntentService {
                         .setVibrate(new long[]{0,500, 300,500})
                         .setSmallIcon(android.R.drawable.star_off)
                         .setContentTitle("TestLove")
-                        .setContentText("Tu contacto te ha respondido");
+                        .setContentText("Tu contacto te ha respondido")
+                        .setAutoCancel(true);
 
         Intent notIntent =  new Intent(this, VentanaRespuesta.class);
 
@@ -189,7 +208,8 @@ public class GCMIntentService extends IntentService {
                         .setVibrate(new long[]{0,500, 300,500})
                         .setSmallIcon(android.R.drawable.star_off)
                         .setContentTitle("TestLove")
-                        .setContentText("Ha llegado el resultado de tu respuesta!!!!!");
+                        .setContentText("Ha llegado el resultado de tu respuesta!!!!!")
+                        .setAutoCancel(true);
 
         Intent notIntent =  new Intent(this, VentanaPuntuacion.class);
 
