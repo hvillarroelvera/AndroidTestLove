@@ -53,7 +53,7 @@ import DTO.PreguntaDTO;
 import DTO.PuntuacionDTO;
 import DTO.SolicitudDTO;
 
-public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFragment.OnSolicitudEnviadaListener,DialogoAgregar.ClickDialogoAgregarListener,
+public class Pendiente extends AppCompatActivity implements DialogoAgregar.ClickDialogoAgregarListener,
         AsyncDelegate{
 
     private DrawerLayout drawerLayout;
@@ -233,12 +233,6 @@ public class Pendiente extends AppCompatActivity implements SolicitudEnviadaFrag
         Intent intent;
         intent = new Intent(Pendiente.this, Pendiente.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onClickAgregarContacto() {
-
-
     }
 
     @Override

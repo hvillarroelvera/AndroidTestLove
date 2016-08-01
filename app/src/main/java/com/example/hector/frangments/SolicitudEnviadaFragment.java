@@ -32,8 +32,7 @@ public class SolicitudEnviadaFragment extends Fragment implements RecyclerViewCl
     private FloatingActionButton fabAgregarContacto;
     private FragmentManager fragmentManager;
     private DialogoAgregar dialogoAgregar;
-    OnSolicitudEnviadaListener mCallback;
-    AdaptadorSolicitudesPendientes adaptador;
+    private AdaptadorSolicitudesPendientes adaptador;
 
     public SolicitudEnviadaFragment() {
         // Required empty public constructor
@@ -95,7 +94,7 @@ public class SolicitudEnviadaFragment extends Fragment implements RecyclerViewCl
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnSolicitudEnviadaListener) activity;
+
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnSolicitudEnviadaListener");
@@ -109,8 +108,5 @@ public class SolicitudEnviadaFragment extends Fragment implements RecyclerViewCl
     }
 
 
-    public interface OnSolicitudEnviadaListener{
-        public void onClickAgregarContacto();
-    }
 
 }

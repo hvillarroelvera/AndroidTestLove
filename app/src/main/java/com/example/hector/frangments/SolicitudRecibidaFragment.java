@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.hector.adaptadores.AdaptadorSolicitudesPendientes;
+import com.example.hector.adaptadores.AdaptadorSolicitudesRecibidas;
 import com.example.hector.adaptadores.RecyclerViewClickListener;
 import com.example.hector.testloveapp.Constantes;
 import com.example.hector.testloveapp.R;
@@ -28,6 +29,7 @@ public class SolicitudRecibidaFragment extends Fragment implements RecyclerViewC
 
     private RecyclerView recView;
     private ArrayList<SolicitudDTO> datos = new ArrayList<SolicitudDTO>();
+    private AdaptadorSolicitudesRecibidas adaptadorSolicitudesRecibidas;
 
     public SolicitudRecibidaFragment() {
         // Required empty public constructor
@@ -43,9 +45,9 @@ public class SolicitudRecibidaFragment extends Fragment implements RecyclerViewC
         recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolRecibidaPendiente);
         recView.setHasFixedSize(true);
 
-        final AdaptadorSolicitudesPendientes adaptador = new AdaptadorSolicitudesPendientes(datos,this);
+        adaptadorSolicitudesRecibidas = new AdaptadorSolicitudesRecibidas(datos,this);
 
-        recView.setAdapter(adaptador);
+        recView.setAdapter(adaptadorSolicitudesRecibidas);
         recView.setLayoutManager(
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
