@@ -108,6 +108,8 @@ public class GCMIntentService extends IntentService {
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+		SolicitudContestadaDAO solicitudContestadaDAO = new SolicitudContestadaDAO();
+		SolicitudDTO solicitudDTO = new SolicitudDTO();
         Util util=new Util();
         ServicioRest servicioRest = new ServicioRest(getApplicationContext());
         ContactoDTO contactoDTO = new ContactoDTO();
@@ -126,7 +128,12 @@ public class GCMIntentService extends IntentService {
         PendingIntent contIntent = PendingIntent.getActivity(
                 this, 0, notIntent, 0);
 
-        try {
+				/*VALIDAR QUE HACER CUANDO ES ACEPTADA O RECHAZADA*/
+		solicitudDTO = getSolicitudDTOReceptorFromMsgGcm(msg);
+		solicitudContestadaDAO.add(solicitudDTO);
+		/*VALIDAR QUE HACER CUANDO ES ACEPTADA O RECHAZADA*/
+		
+        /*try {
             contactoDTO = servicioRest.recuperarContactoXUsuario(util.getUserCache(getApplicationContext()));
         } catch (ConnectionException e) {
             e.printStackTrace();
@@ -134,8 +141,8 @@ public class GCMIntentService extends IntentService {
             e.printStackTrace();
         }
         util.registrarContactoEnCache(getApplicationContext(), contactoDTO.getContacto(), Long.toString(contactoDTO.getId_contacto()));
-        /*util.eliminarSolicitudContactoPendienteCache(getApplicationContext());*/
-        solicitudEnviadaDAO.deleteByNombreContacto(contactoDTO.getContacto());
+        util.eliminarSolicitudContactoPendienteCache(getApplicationContext());
+        solicitudEnviadaDAO.deleteByNombreContacto(contactoDTO.getContacto());*/
         mBuilder.setContentIntent(contIntent);
 
         mNotificationManager.notify(NOTIF_ALERTA_ID, mBuilder.build());
