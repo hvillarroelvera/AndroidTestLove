@@ -1,11 +1,16 @@
 package com.example.hector.adaptadores;
 
+import android.app.DialogFragment;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.hector.testloveapp.Constantes;
+import com.example.hector.testloveapp.DialogoAgregar;
 import com.example.hector.testloveapp.R;
 
 import java.util.ArrayList;
@@ -61,6 +66,8 @@ public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<Adaptad
 
         private TextView emisor;
         private TextView receptor;
+        private FloatingActionButton fabReenviarFragSolEnv;
+        private FloatingActionButton fabEliminarSolicitudSolEnv;
 
 
         public SolicitudViewHolder(View itemView) {
@@ -68,8 +75,23 @@ public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<Adaptad
 
             emisor = (TextView)itemView.findViewById(R.id.nombreEmisorFragSolEnv);
             receptor = (TextView)itemView.findViewById(R.id.nombreReceptorFragSolEnv);
+            fabReenviarFragSolEnv = (FloatingActionButton)itemView.findViewById(R.id.fabReenviarFragSolEnv);
+            fabEliminarSolicitudSolEnv = (FloatingActionButton)itemView.findViewById(R.id.fabEliminarSolicitudSolEnv);
+            fabReenviarFragSolEnv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "click on fabReenviarFragSolEnv", Toast.LENGTH_SHORT).show();
+                    //TODO Implementar reenvio de solicitud
+                }
+            });
+            fabEliminarSolicitudSolEnv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "click on fabEliminarSolicitudSolEnv", Toast.LENGTH_SHORT).show();
+                    //TODO Implementar eliminacion de solicitud
+                }
+            });
 
-            itemView.setOnClickListener(this);
         }
 
         public void bindSolicitud(SolicitudDTO solicitudDTO) {
@@ -84,7 +106,7 @@ public class AdaptadorSolicitudesPendientes extends RecyclerView.Adapter<Adaptad
 
         @Override
         public void onClick(View v) {
-            recyclerViewClickListener.recyclerViewListClicked(v,this.getLayoutPosition());
+            recyclerViewClickListener.recyclerViewListClicked(v,this.getLayoutPosition(),v.getId()+"");
         }
     }
 }

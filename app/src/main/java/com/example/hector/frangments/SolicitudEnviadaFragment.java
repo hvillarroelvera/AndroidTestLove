@@ -102,8 +102,9 @@ public class SolicitudEnviadaFragment extends Fragment implements RecyclerViewCl
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position) {
-        Toast.makeText(getActivity(), "Position clickeada "+position, Toast.LENGTH_SHORT).show();
+    public void recyclerViewListClicked(View v, int position,String itemId) {
+
+        Toast.makeText(getActivity(), "Position clickeada "+ itemId, Toast.LENGTH_SHORT).show();
 
     }
 

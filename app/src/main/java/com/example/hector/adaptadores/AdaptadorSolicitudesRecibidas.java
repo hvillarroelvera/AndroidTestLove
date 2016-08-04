@@ -84,7 +84,7 @@ public class AdaptadorSolicitudesRecibidas extends RecyclerView.Adapter<Adaptado
 
         @Override
         public void onClick(View v) {
-            recyclerViewClickListener.recyclerViewListClicked(v, this.getLayoutPosition());
+            recyclerViewClickListener.recyclerViewListClicked(v, this.getLayoutPosition(),this.getClass().toString());
         }
     }
 }

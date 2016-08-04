@@ -63,7 +63,7 @@ public class SolicitudRecibidaFragment extends Fragment implements RecyclerViewC
     }
 
     @Override
-    public void recyclerViewListClicked(View v, int position) {
+    public void recyclerViewListClicked(View v, int position,String itemId) {
         Toast.makeText(getActivity(), "Position clickeada " + position, Toast.LENGTH_SHORT).show();
     }
 }

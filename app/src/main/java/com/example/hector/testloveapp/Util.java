@@ -795,7 +795,7 @@ public class Util {
 	public SolicitudDTO getSolicitudDTOReceptorFromMsgGcm(String msgGcm){
         SolicitudDTO solicitudDTO = new SolicitudDTO();
         String numeroSolicitud = "";
-        String emisor = "";
+        String receptor = "";
         int index = 0;
         index = msgGcm.indexOf(":");
         numeroSolicitud = msgGcm.substring(0, index);

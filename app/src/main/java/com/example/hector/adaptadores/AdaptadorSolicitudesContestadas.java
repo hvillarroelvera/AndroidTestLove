@@ -84,7 +84,7 @@ public class AdaptadorSolicitudesContestadas extends RecyclerView.Adapter<Adapta
 
         @Override
         public void onClick(View v) {
-            recyclerViewClickListener.recyclerViewListClicked(v, this.getLayoutPosition());
+            recyclerViewClickListener.recyclerViewListClicked(v, this.getLayoutPosition(),this.getClass().toString());
         }
     }
 }

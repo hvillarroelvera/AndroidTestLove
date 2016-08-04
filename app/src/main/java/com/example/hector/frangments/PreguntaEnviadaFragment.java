@@ -4,11 +4,19 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.hector.adaptadores.RecyclerViewClickListener;
+import com.example.hector.testloveapp.Constantes;
 import com.example.hector.testloveapp.R;
+
+import java.util.ArrayList;
+
+import DTO.PreguntaDTO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,7 +26,7 @@ import com.example.hector.testloveapp.R;
  * Use the {@link PreguntaEnviadaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PreguntaEnviadaFragment extends Fragment implements RecyclerViewClickListener{
+public class PreguntaEnviadaFragment extends Fragment implements RecyclerViewClickListener {
     
     private OnFragmentInteractionListener mListener;
     private RecyclerView recView;
@@ -48,11 +56,11 @@ public class PreguntaEnviadaFragment extends Fragment implements RecyclerViewCli
         View rootView = inflater.inflate(R.layout.fragment_pregunta_enviada, container, false);
 		setData();
 		//Inicialización RecyclerView
-        recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolEnviadaPendiente);
+        /*recView = (RecyclerView) rootView.findViewById(R.id.RecViewSolEnviadaPendiente);
         recView.setHasFixedSize(true);
 		recView.setAdapter(adaptador);
         recView.setLayoutManager(
-                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+                new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));*/
 		return rootView;
     }
 
@@ -78,6 +86,11 @@ public class PreguntaEnviadaFragment extends Fragment implements RecyclerViewCli
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position, String itemId) {
+
     }
 
     /**

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.hector.DAO.SolicitudContestadaDAO;
 import com.example.hector.DAO.SolicitudEnviadaDAO;
 import com.example.hector.DAO.SolicitudRecibidaDAO;
 import com.example.hector.exceptions.ConnectionException;
@@ -108,7 +109,7 @@ public class GCMIntentService extends IntentService {
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		SolicitudContestadaDAO solicitudContestadaDAO = new SolicitudContestadaDAO();
+		SolicitudContestadaDAO solicitudContestadaDAO = new SolicitudContestadaDAO(getApplicationContext());
 		SolicitudDTO solicitudDTO = new SolicitudDTO();
         Util util=new Util();
         ServicioRest servicioRest = new ServicioRest(getApplicationContext());
@@ -129,7 +130,7 @@ public class GCMIntentService extends IntentService {
                 this, 0, notIntent, 0);
 
 				/*VALIDAR QUE HACER CUANDO ES ACEPTADA O RECHAZADA*/
-		solicitudDTO = getSolicitudDTOReceptorFromMsgGcm(msg);
+		solicitudDTO = util.getSolicitudDTOReceptorFromMsgGcm(msg);
 		solicitudContestadaDAO.add(solicitudDTO);
 		/*VALIDAR QUE HACER CUANDO ES ACEPTADA O RECHAZADA*/
 		

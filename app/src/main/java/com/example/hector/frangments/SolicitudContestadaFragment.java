@@ -56,8 +56,10 @@ public class SolicitudContestadaFragment extends Fragment implements RecyclerVie
 
     }
 
+
+
     @Override
-    public void recyclerViewListClicked(View v, int position) {
+    public void recyclerViewListClicked(View v, int position, String itemId) {
 
     }
 }
